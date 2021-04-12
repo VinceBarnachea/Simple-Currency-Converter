@@ -127,7 +127,8 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     String name2 = dataSnapshot.child("code").getValue(String.class);
                     String name1 = dataSnapshot.child("name").getValue(String.class);
-                    String finalString = name1+" \t "+name2;
+                    String name3 = dataSnapshot.child("symbol_native").getValue(String.class);
+                    String finalString = name1+" | "+name2+" | "+name3;
                     list.add(finalString);
                 }
 
