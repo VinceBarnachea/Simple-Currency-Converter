@@ -125,10 +125,9 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 final List<String> list = new ArrayList<String>();
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    String countryCode = dataSnapshot.child("code").getValue(String.class);
-                    String currencyName = dataSnapshot.child("name").getValue(String.class);
-                    String currencySymbol = dataSnapshot.child("symbol_native").getValue(String.class);
-                    String finalString = currencyName+" | "+countryCode+" | "+currencySymbol;
+                    String name2 = dataSnapshot.child("code").getValue(String.class);
+                    String name1 = dataSnapshot.child("name").getValue(String.class);
+                    String finalString = name1+" \t "+name2;
                     list.add(finalString);
                 }
 
