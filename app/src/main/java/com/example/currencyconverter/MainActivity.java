@@ -39,26 +39,34 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-   // private Spinner spinner1, spinner2;
+//   // private Spinner spinner1, spinner2;
     private EditText baseCurrency;
     private TextView resultCurrency, convertFrom, convertTo;
     private Button convert;
-    private DatabaseReference Rootref;
+    private DatabaseReference rootref;
     private ProgressBar load, submitLoad;
     private Dialog fromDialog, toDialog;
     private ListView listView;
     private String input, symbol1, symbol2;
     ArrayAdapter<String> arrayAdapter1, arrayAdapter2;
 
+    private Dialog showDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Rootref = FirebaseDatabase.getInstance().getReference();
 
 
-        //spinner1 = findViewById(R.id.spinner1);
-        //spinner2 = findViewById(R.id.spinner2);
+
+
+
+
+        rootref = FirebaseDatabase.getInstance().getReference();
+
+
+//        spinner1 = findViewById(R.id.spinner1);
+//        spinner2 = findViewById(R.id.spinner2);
+
         convertFrom = findViewById(R.id.convert_from_dropdown_menu);
         convertTo = findViewById(R.id.convert_to_dropdown_menu);
         baseCurrency = findViewById(R.id.currency1);
@@ -73,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
 
         //fetchCurrencyInFirebasetoSpinner();
 
+
+
         convertFrom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 EditText editText = fromDialog.findViewById(R.id.edit_text);
 
                 load.setVisibility(View.VISIBLE);
-                Rootref.child("Country").addValueEventListener(new ValueEventListener() {
+                rootref.child("Country").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         final List<String> list = new ArrayList<String>();
@@ -119,31 +129,31 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-            editText.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editText.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                }
+                    }
 
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    arrayAdapter1.getFilter().filter(charSequence);
-                }
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        arrayAdapter1.getFilter().filter(charSequence);
+                    }
 
-                @Override
-                public void afterTextChanged(Editable editable) {
+                    @Override
+                    public void afterTextChanged(Editable editable) {
 
-                }
-            });
+                    }
+                });
 
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    convertFrom.setText(arrayAdapter1.getItem(i));
-                    fromDialog.dismiss();
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        convertFrom.setText(arrayAdapter1.getItem(i));
+                        fromDialog.dismiss();
 
-                }
-            });
+                    }
+                });
 
             }
         });
@@ -152,17 +162,17 @@ public class MainActivity extends AppCompatActivity {
         convertTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fromDialog = new Dialog(MainActivity.this);
-                fromDialog.setContentView(R.layout.from_spinner);
-                fromDialog.getWindow().setLayout(650,800);
+                toDialog = new Dialog(MainActivity.this);
+                toDialog.setContentView(R.layout.from_spinner);
+                toDialog.getWindow().setLayout(1050,1800);
 
-                fromDialog.show();
+                toDialog.show();
 
-                listView = fromDialog.findViewById(R.id.list_view);
-                EditText editText = fromDialog.findViewById(R.id.edit_text);
+                listView = toDialog.findViewById(R.id.list_view);
+                EditText editText = toDialog.findViewById(R.id.edit_text);
 
                 load.setVisibility(View.VISIBLE);
-                Rootref.child("Country").addValueEventListener(new ValueEventListener() {
+                rootref.child("Country").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         final List<String> list = new ArrayList<String>();
@@ -245,6 +255,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
     private void FetchData(String input, String real1, String real2) {
@@ -281,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-// Add the request to the RequestQueue.
+ // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
 
@@ -300,8 +311,8 @@ public class MainActivity extends AppCompatActivity {
 //
 //                    list.add(finalString);
 //                }
-//
-//
+////
+////
 //                ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, list);
 //                arrayAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //                spinner1.setAdapter(arrayAdapter1);
@@ -320,7 +331,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //            }
 //        });
-//    }
+    }
 
 
-}
+

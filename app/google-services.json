@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "569553243217",
+    "firebase_url": "https://currency-converter-4c13d-default-rtdb.firebaseio.com",
     "project_id": "currency-converter-4c13d",
     "storage_bucket": "currency-converter-4c13d.appspot.com"
   },
