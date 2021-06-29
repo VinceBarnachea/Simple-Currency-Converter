@@ -33,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,13 +42,13 @@ public class MainActivity extends AppCompatActivity {
 
 //   // private Spinner spinner1, spinner2;
     private EditText baseCurrency;
-    private TextView resultCurrency, convertFrom, convertTo;
+    private TextView resultCurrency, convertFrom, convertTo, fromCurrencySym, toCurrencySym;
     private Button convert;
     private DatabaseReference rootref;
     private ProgressBar load, submitLoad;
     private Dialog fromDialog, toDialog;
     private ListView listView;
-    private String input, symbol1, symbol2;
+    private String input, txtFrom, txtTo;
     ArrayAdapter<String> arrayAdapter1, arrayAdapter2;
 
     private Dialog showDialog;
@@ -64,16 +65,16 @@ public class MainActivity extends AppCompatActivity {
         rootref = FirebaseDatabase.getInstance().getReference();
 
 
-//        spinner1 = findViewById(R.id.spinner1);
-//        spinner2 = findViewById(R.id.spinner2);
-
         convertFrom = findViewById(R.id.convert_from_dropdown_menu);
         convertTo = findViewById(R.id.convert_to_dropdown_menu);
         baseCurrency = findViewById(R.id.currency1);
         resultCurrency = findViewById(R.id.showResult);
-       // editText = findViewById(R.id.edit_text);
-//        currencySymbol1 = findViewById(R.idim.currencySymbol1);
-//        currencySymbol2 = findViewById(R.id.currencySymbol2);
+
+        //Mga Bagong lagay
+        fromCurrencySym = findViewById(R.id.fromCurrencySym);
+        toCurrencySym = findViewById(R.id.toCurrencySym);
+
+
         convert = findViewById(R.id.convertButton);
         load = findViewById(R.id.load);
         submitLoad = findViewById(R.id.submit_load);
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         final List<String> list = new ArrayList<String>();
                         String symbol;
+
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             String name2 = dataSnapshot.child("code").getValue(String.class);
                             String name1 = dataSnapshot.child("name").getValue(String.class);
@@ -150,8 +152,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         convertFrom.setText(arrayAdapter1.getItem(i));
+                        //Mga Bagong lagay
+                        String countryCode = arrayAdapter1.getItem(i);
+                        fromCurrencySym.setText(countryCode.substring(countryCode.length()-3));
                         fromDialog.dismiss();
-
                     }
                 });
 
@@ -227,7 +231,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         convertTo.setText(arrayAdapter2.getItem(i));
-                        fromDialog.dismiss();
+                        String countryCode = arrayAdapter2.getItem(i);
+                        //Mga Bagong lagay
+                        toCurrencySym.setText(countryCode.substring(countryCode.length()-3));
+                        toDialog.dismiss();
 
                     }
                 });
@@ -241,15 +248,23 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 submitLoad.setVisibility(View.VISIBLE);
                 input = baseCurrency.getText().toString();
+                txtFrom = convertFrom.getText().toString();
+                txtTo = convertTo.getText().toString();
                 String s1 = convertFrom.getText().toString();
                 String s2 = convertTo.getText().toString();
-                String real1 = s1.substring(s1.length() - 3);
-                String real2 = s2.substring(s2.length() - 3);
 
 
-                if (TextUtils.isEmpty(input)) {
-                    Toast.makeText(MainActivity.this, "Enter some values!", Toast.LENGTH_SHORT).show();
-                } else {
+
+                //Mga Bago
+               if(convertFrom.getText().toString().isEmpty() || convertTo.getText().toString().isEmpty()){
+                    Toast.makeText(MainActivity.this, "Please Select a Country!", Toast.LENGTH_SHORT).show();
+                }
+                else if(TextUtils.isEmpty(input)) {
+                    Toast.makeText(MainActivity.this, "Please enter the amount!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    String real1 = s1.substring(s1.length() - 3);
+                    String real2 = s2.substring(s2.length() - 3);
                     FetchData(input, real1, real2);
                 }
             }
@@ -270,13 +285,18 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         // Display the first 500 characters of the response string.
 //                        resultCurrency.setText("Response is: "+ response.substring(0,500));
-                        float i = Float.parseFloat(input);
+                        //Mga
+                        //Ginawa kong double para maround off sa two decimal places
+                        double i = Double.parseDouble(input);
 
                         try {
                             JSONObject jsonObject = new JSONObject(response.toString());
-                            float string = Float.parseFloat(jsonObject.getString(real1 + "_" + real2));
-                            float res = string * i;
-                            resultCurrency.setText(String.valueOf(res));
+                            //Eto mga naging double
+                            double string = Float.parseFloat(jsonObject.getString(real1 + "_" + real2));
+                            double res = string * i;
+                            double roundOff = (double) Math.round(res * 100) / 100;
+                            resultCurrency.setText(String.valueOf(roundOff));
+                            //resultCurrency.setText(String.valueOf(String.format("%.2f",res)));
                             submitLoad.setVisibility(View.GONE);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -296,41 +316,6 @@ public class MainActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-//    private void fetchCurrencyInFirebasetoSpinner() {
-//        load.setVisibility(View.VISIBLE);
-//        Rootref.child("Country").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                final List<String> list = new ArrayList<String>();
-//                String symbol;
-//                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                    String name2 = dataSnapshot.child("code").getValue(String.class);
-//                    String name1 = dataSnapshot.child("name").getValue(String.class);
-//                    symbol = dataSnapshot.child("symbol_native").getValue(String.class);
-//                    String finalString = name1 + " | "+symbol+" | " + name2;
-//
-//                    list.add(finalString);
-//                }
-////
-////
-//                ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, list);
-//                arrayAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                spinner1.setAdapter(arrayAdapter1);
-//
-//
-//                ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, list);
-//                arrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                spinner2.setAdapter(arrayAdapter2);
-//
-//
-//                load.setVisibility(View.GONE);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
     }
 
 

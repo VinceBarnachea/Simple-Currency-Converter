@@ -1,34 +1,33 @@
 {
   "project_info": {
-    "project_number": "569553243217",
-    "firebase_url": "https://currency-converter-4c13d-default-rtdb.firebaseio.com",
-    "project_id": "currency-converter-4c13d",
-    "storage_bucket": "currency-converter-4c13d.appspot.com"
+    "project_number": "519274642301",
+    "project_id": "currency-converter-7ad94",
+    "storage_bucket": "currency-converter-7ad94.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:569553243217:android:c3ae1ce48667146289bc70",
+        "mobilesdk_app_id": "1:519274642301:android:a2feb7134e5e20323e2a14",
         "android_client_info": {
           "package_name": "com.example.currencyconverter"
         }
       },
       "oauth_client": [
         {
-          "client_id": "569553243217-bf9k0n50k6uu76r55d5p481ko74esieh.apps.googleusercontent.com",
+          "client_id": "519274642301-83o9ahsj8i8hl55b03326lo0b190uiog.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBts7V6yUb4F-eL3M7IJtgyyqTpKFwuCq4"
+          "current_key": "AIzaSyB-xibY-JHymmPR3LM0zJEJIvvmVG3LxVM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "569553243217-bf9k0n50k6uu76r55d5p481ko74esieh.apps.googleusercontent.com",
+              "client_id": "519274642301-83o9ahsj8i8hl55b03326lo0b190uiog.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
